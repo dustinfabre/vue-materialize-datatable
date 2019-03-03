@@ -5,9 +5,8 @@
 			<div class="actions">
 				<a v-for="(button, index) in customButtons" href="javascript:undefined"
 				   class="waves-effect btn-flat nopadding"
-				   v-if="button.hide ? !button.hide : true"
 				   @click="button.onclick"
-				   :key="index"
+				   :key="index + '_key1'"
 				   >
 					<i class="material-icons">{{button.icon}}</i>
 				</a>
@@ -44,7 +43,7 @@
 			<thead>
 				<tr>
 					<th v-for="(column, index) in columns"
-						:key="index"
+						:key="index + '_key2'"
 						@click="sort(index)"
 						:class="(sortable ? 'sorting ' : '')
 							+ (sortColumn === index ?
@@ -59,8 +58,8 @@
 			</thead>
 
 			<tbody>
-				<tr v-for="(row, index) in paginated" :class="{ clickable : clickable }" :key="index" @click="click(row)">
-					<td v-for="column in columns" :class=" { numeric : column.numeric } " :key="index">
+				<tr v-for="(row, index) in paginated" :class="{ clickable : clickable }" :key="index + '_key3'" @click="click(row)">
+					<td v-for="column in columns" :class=" { numeric : column.numeric } " :key="column.field + '_' + index + '_key4'">
 						<div v-if="!column.html"> {{ collect(row, column.field) }} </div>
 						<div v-if="column.html" v-html="collect(row, column.field)"></div>						
 					</td>
@@ -74,7 +73,7 @@
 				<label>
 					<span>{{lang['rows_per_page']}}:</span>
 					<select class="browser-default" @change="onTableLength">
-						<option v-for="option in perPageOptions" :value="option" :selected="option == currentPerPage" :key="index">
+						<option v-for="option in perPageOptions" :value="option" :selected="option == currentPerPage" :key="option + '_' + index + '_key5'">
 						{{ option === -1 ? lang['all'] : option }}
 					  </option>
 					</select>
@@ -108,7 +107,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 	import Fuse from 'fuse.js';
 	import locales from './locales';
